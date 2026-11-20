@@ -53,8 +53,33 @@ FPGA Board
 
 Digilent Nexys A7 (Artix-7)
 
-Author
+Results and Hardware Verification
 
-Dhivahar B
+The Traffic Signal Controller was successfully designed and implemented using Verilog HDL in Xilinx Vivado.
 
-B.Tech Electronics and Communication Engineering
+Implementation Results
+
+- RTL simulation completed successfully.
+- Synthesis completed successfully.
+- Design implementation completed successfully.
+- Bitstream generation completed successfully.
+- FPGA programming completed successfully.
+
+Hardware Verification
+
+The generated bitstream was programmed onto the Digilent Nexys A7 FPGA board. The onboard LEDs were tested and verified to display the traffic signal sequences correctly.
+
+Conclusion
+
+The Traffic Signal Controller was successfully simulated, implemented, and tested on FPGA hardware. The project demonstrates the practical application of Verilog HDL, finite state machines (FSM), and FPGA-based digital system design.
+
+Tools and Hardware
+
+- HDL: Verilog
+- Software: Xilinx Vivado
+- FPGA Board: Digilent Nexys A7
+- Programming Language: Verilog HDL
+
+Project Status
+
+Successfully Completed
