@@ -1,4 +1,3 @@
-
 module traffic_signal_controller(
     input wire clk,
     input wire reset,
