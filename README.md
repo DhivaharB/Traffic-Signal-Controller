@@ -1,133 +1,60 @@
-module traffic_signal_controller(
-    input wire clk,
-    input wire reset,
-    input wire emergency,
+FPGA Based Traffic Signal Controller
 
-    output reg red_ns,
-    output reg yellow_ns,
-    output reg green_ns,
+Project Overview
 
-    output reg red_ew,
-    output reg yellow_ew,
-    output reg green_ew
-);
+This project implements a traffic signal controller using Verilog HDL on the Digilent Nexys A7 FPGA development board.
 
-// State definitions
-parameter NS_GREEN  = 3'b000;
-parameter NS_YELLOW = 3'b001;
-parameter EW_GREEN  = 3'b010;
-parameter EW_YELLOW = 3'b011;
-parameter ALL_RED   = 3'b100;
+Features
 
-reg [2:0] state;
-reg [26:0] counter;
-reg tick;
+- Two-way traffic signal control
+- North-South and East-West traffic management
+- Finite State Machine (FSM)
+- 100 MHz FPGA clock
+- Clock divider for traffic timing
+- Emergency override
+- Automatic traffic light sequence
 
-// Clock divider: 100 MHz to 1 Hz
-always @(posedge clk) begin
-    if (reset) begin
-        counter <= 0;
-        tick <= 0;
-    end
-    else if (counter == 27'd99_999_999) begin
-        counter <= 0;
-        tick <= 1;
-    end
-    else begin
-        counter <= counter + 1;
-        tick <= 0;
-    end
-end
+Hardware Requirements
 
-// Traffic signal state machine
-always @(posedge clk) begin
-    if (reset) begin
-        state <= NS_GREEN;
-    end
-    else if (emergency) begin
-        state <= ALL_RED;
-    end
-    else if (tick) begin
-        case(state)
+- Digilent Nexys A7 FPGA board
+- USB programming cable
+- Computer with Xilinx Vivado
 
-            NS_GREEN:
-                if (counter == 0)
-                    state <= NS_YELLOW;
+Software Requirements
 
-            NS_YELLOW:
-                state <= EW_GREEN;
+- Xilinx Vivado Design Suite
+- Verilog HDL
 
-            EW_GREEN:
-                if (counter == 0)
-                    state <= EW_YELLOW;
+Traffic Signal Timing
 
-            EW_YELLOW:
-                state <= ALL_RED;
+Signal| Duration
+North-South Green| 5 seconds
+North-South Yellow| 2 seconds
+East-West Green| 5 seconds
+East-West Yellow| 2 seconds
+All Red| 1 second
 
-            ALL_RED:
-                state <= NS_GREEN;
+Project Files
 
-            default:
-                state <= NS_GREEN;
+- "traffic_signal_controller.v" – Main Verilog source code
+- "Nexys_A7.xdc" – FPGA pin constraints
+- "README.md" – Project documentation
 
-        endcase
-    end
-end
+Implementation Flow
 
-// Traffic light output logic
-always @(*) begin
+1. RTL Design
+2. Simulation
+3. Synthesis
+4. Implementation
+5. Bitstream Generation
+6. FPGA Hardware Programming
 
-    red_ns = 0;
-    yellow_ns = 0;
-    green_ns = 0;
+FPGA Board
 
-    red_ew = 0;
-    yellow_ew = 0;
-    green_ew = 0;
+Digilent Nexys A7 (Artix-7)
 
-    case(state)
+Author
 
-        NS_GREEN: begin
-            green_ns = 1;
-            red_ew = 1;
-        end
+Dhivahar B
 
-        NS_YELLOW: begin
-            yellow_ns = 1;
-            red_ew = 1;
-        end
-
-        EW_GREEN: begin
-            red_ns = 1;
-            green_ew = 1;
-        end
-
-        EW_YELLOW: begin
-            red_ns = 1;
-            yellow_ew = 1;
-        end
-
-        ALL_RED: begin
-            red_ns = 1;
-            red_ew = 1;
-        end
-
-        default: begin
-            red_ns = 1;
-            red_ew = 1;
-        end
-
-    endcase
-
-    if (emergency) begin
-        red_ns = 1;
-        yellow_ns = 0;
-        green_ns = 0;
-        red_ew = 1;
-        yellow_ew = 0;
-        green_ew = 0;
-    end
-
-end
-
-endmodule
+B.Tech Electronics and Communication Engineering
